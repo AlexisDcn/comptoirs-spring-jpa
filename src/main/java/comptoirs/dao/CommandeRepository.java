@@ -30,7 +30,7 @@ public interface CommandeRepository extends JpaRepository<Commande, Integer> {
     @Query("""
             SELECT c.numero AS numeroCommande,
                    c.port AS port,
-                   SUM(l.quantite * l.produit.prixUnitaire * (1 - c.remise / 100)) AS montantArticles
+                   SUM(l.quantite * l.produit.prixUnitaire * (1 - c.remise)) AS montantArticles
             FROM Commande c
             JOIN c.lignes l
             WHERE c.client.code = :codeClient
