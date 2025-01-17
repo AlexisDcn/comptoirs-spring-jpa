@@ -29,13 +29,12 @@ public interface CommandeRepository extends JpaRepository<Commande, Integer> {
      */
     @Query("""
             SELECT c.numero AS numeroCommande,
-                   c.saisiele AS saisieLe,
-                   c.envoyeele AS envoyeeLe,
                    c.port AS port,
-                   c.destinataire AS destinataire,
-                   c.remise AS remise
+                   SUM(l.quantite * l.produit.prixUnitaire * (1 - c.remise / 100)) AS montantArticles
             FROM Commande c
+            JOIN c.lignes l
             WHERE c.client.code = :codeClient
+            GROUP BY c.numero, c.port
             """)
     List<CommandeProjection> findCommandesByClientCode(String codeClient);
 }

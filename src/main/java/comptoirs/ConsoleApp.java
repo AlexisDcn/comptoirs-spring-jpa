@@ -103,14 +103,12 @@ public class ConsoleApp implements CommandLineRunner {
         String codeClient = "ALFKI"; // Exemple de code client
         List<CommandeProjection> commandes = commandeDAO.findCommandesByClientCode(codeClient);
         commandes.forEach(commande ->
-                log.info("Commande : {}, Saisie le : {}, Envoyée le : {}, Port : {}, Destinataire : {}, Remise : {}",
+                log.info("Commande : {}, Port : {}, Montant Articles : {}",
                         commande.getNumeroCommande(),
-                        commande.getSaisieLe(),
-                        commande.getEnvoyeeLe(),
                         commande.getPort(),
-                        commande.getDestinataire(),
-                        commande.getRemise())
+                        commande.getMontantArticles())
         );
+
     }
 
     public static void tapezEnterPourContinuer() throws IOException  {
