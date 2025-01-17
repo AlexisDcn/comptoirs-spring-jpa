@@ -1,9 +1,11 @@
 package comptoirs;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import comptoirs.projection.CommandeProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -87,6 +89,27 @@ public class ConsoleApp implements CommandLineRunner {
         log.info("Nombre de produits différents commandés par chaque client");
         clientDAO.produitsParClient().forEach(
             ppc -> log.info("Le client {} a commandé {} produits différents", ppc.getSociete(), ppc.getNombre())
+        );
+
+
+        tapezEnterPourContinuer();
+        log.info("Calcul du montant des articles pour une commande");
+        Integer numeroCommande = 10702; // Exemple de numéro de commande
+        BigDecimal montant = commandeDAO.montantArticles(numeroCommande);
+        log.info("Montant des articles pour la commande {} : {}", numeroCommande, montant);
+
+        tapezEnterPourContinuer();
+        log.info("Liste des commandes pour un client donné");
+        String codeClient = "ALFKI"; // Exemple de code client
+        List<CommandeProjection> commandes = commandeDAO.findCommandesByClientCode(codeClient);
+        commandes.forEach(commande ->
+                log.info("Commande : {}, Saisie le : {}, Envoyée le : {}, Port : {}, Destinataire : {}, Remise : {}",
+                        commande.getNumeroCommande(),
+                        commande.getSaisieLe(),
+                        commande.getEnvoyeeLe(),
+                        commande.getPort(),
+                        commande.getDestinataire(),
+                        commande.getRemise())
         );
     }
 

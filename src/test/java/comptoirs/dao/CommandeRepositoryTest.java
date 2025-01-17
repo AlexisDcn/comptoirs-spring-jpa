@@ -58,4 +58,22 @@ public class CommandeRepositoryTest {
         assertEquals(commandeAvecProduits, commande);
         assertEquals(2, commande.getLignes().size());
     }
+
+    @Test
+    void testMontantArticles() {
+        BigDecimal prixChai = produitDao.findById(1).orElseThrow().getPrixUnitaire();
+        BigDecimal prixChang = produitDao.findById(2).orElseThrow().getPrixUnitaire();
+        BigDecimal remise = commandeAvecProduits.getRemise();
+
+        BigDecimal montantAttendu = new BigDecimal("10")
+                .multiply(prixChai)
+                .add(new BigDecimal("20")
+                        .multiply(prixChang))
+                .multiply(new BigDecimal("1").subtract(remise));
+
+        BigDecimal montantCalcule = commandeDao.montantArticles(commandeAvecProduits.getNumero());
+        assertEquals(montantAttendu, montantCalcule, "Le montant des articles doit être correct");
+    }
+
+
 }
